@@ -8,6 +8,11 @@ public class AsteroidMoverSystem : ComponentSystem
 {
     protected override void OnUpdate()
     {
-        //throw new System.NotImplementedException();
+        Entities.ForEach((ref Translation translation, ref AsteroidMoverComponent asteroidMoverComponent) =>
+        {
+            translation.Value.x += asteroidMoverComponent.direction.x * asteroidMoverComponent.speed;
+            translation.Value.y += asteroidMoverComponent.direction.y * asteroidMoverComponent.speed;
+
+        });
     }
 }

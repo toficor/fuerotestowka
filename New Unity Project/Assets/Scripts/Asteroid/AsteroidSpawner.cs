@@ -11,6 +11,7 @@ public class AsteroidSpawner : MonoBehaviour
     [SerializeField] private GridSettings gridSettings;
     [SerializeField] private Mesh asterodiMesh;
     [SerializeField] private Material asterodiMaterial;
+    [SerializeField] private AsteroidSettings asteroidSettings;
 
 
     private List<Vector2> grid;
@@ -35,7 +36,8 @@ public class AsteroidSpawner : MonoBehaviour
             typeof(Translation),
             typeof(RenderMesh),
             typeof(LocalToWorld),
-            typeof(RenderBounds)
+            typeof(RenderBounds),
+            typeof(AsteroidMoverComponent)
             );
 
         NativeArray<Entity> asteroids = new NativeArray<Entity>(gridSettings.columns * gridSettings.rows, Allocator.Temp);
@@ -51,7 +53,10 @@ public class AsteroidSpawner : MonoBehaviour
                 material = asterodiMaterial,
             }) ;
 
-           // entityManager.SetComponentData(entity, new RenderBounds { Value = new Unity.Mathematics.AABB() })
+            entityManager.SetComponentData(entity, new AsteroidMoverComponent { 
+                speed = asteroidSettings.GetSpeed(), 
+                direction = asteroidSettings.GetRandomDirection() 
+            });
 
             entityManager.SetComponentData(entity, new Translation {Value = new Unity.Mathematics.float3(grid[i].x, grid[i].y, 0) });
 
